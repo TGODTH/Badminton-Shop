@@ -1,0 +1,5 @@
+INSERT INTO Producttb (product_name, product_price, product_image)
+        VALUES ('Iphone 14 Series',000,'./upload/product1.png'),
+                        ('Iphone 14 Series',000,'./upload/product1.png'),
+                        ('Iphone 14 Series',000,'./upload/product1.png'),
+                        ('Iphone 14 Series',000,'./upload/product1.png')"
