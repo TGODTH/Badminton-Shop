@@ -70,7 +70,7 @@ if (isset($_POST['add'])) {
     <div class="container">
         <div class="row text-center py-5">
             <?php
-            $result = $database->getData();
+            $result = $database->getData("producttb");
             while ($row = mysqli_fetch_assoc($result)) {
                 component($row['product_name'], $row['product_description'], $row['product_price'], $row['product_image'], $row['id']);
             }

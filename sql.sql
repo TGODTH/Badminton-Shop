@@ -15,18 +15,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Dumping database structure for productdb
-CREATE DATABASE IF NOT EXISTS `productdb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `productdb`;
+-- Dumping database structure for shopdb
+CREATE DATABASE IF NOT EXISTS `shopdb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+USE `shopdb`;
 
--- Dumping structure for table productdb.producttb
+-- Dumping structure for table
+CREATE TABLE IF NOT EXISTS `usertb` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(50) NOT NULL,
+  `user_password` varchar(50) NOT NULL,
+  `role` varchar(60) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE IF NOT EXISTS `producttb` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_name` varchar(25) NOT NULL,
+  `product_description` varchar(200) NOT NULL,
   `product_price` float DEFAULT NULL,
   `product_image` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `boughtlisttb` (
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_name` varchar(25) NOT NULL,
+  `product_price` float DEFAULT NULL,
+  `product_amount` int DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- Data exporting was unselected.
 
