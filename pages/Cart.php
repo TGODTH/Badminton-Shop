@@ -61,6 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Kool Badminton - Cart</title>
+    <style>
+        .btnPay{
+            margin-top: 1rem;
+            padding: 1rem;
+            font-size: 2rem;
+            color: white;
+            background: #0080ff;
+            border: none;
+            border-radius: 0.7rem !important;
+            width: 100%;
+        }
+    </style>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css" />
@@ -144,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
                     </div>
                 </div>
             </div>
-            <form method="post" action=""><button type="submit" name="submit_order" class="btn"> Pay </button></form>
+            <form method="post" action=""><button type="submit" name="submit_order" class="btnPay"> Pay </button></form>
         </div>
     </div>
     <?php require_once("../components/cartIcon.php"); ?>
