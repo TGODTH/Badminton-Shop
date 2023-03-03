@@ -51,7 +51,6 @@ class CreateDb
                         user_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         user_name VARCHAR(50) NOT NULL,
                         user_password VARCHAR(50) NOT NULL,
-                        user_role VARCHAR(60) DEFAULT NULL
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;";
 
             $sql2 = "CREATE TABLE IF NOT EXISTS $producttb (
