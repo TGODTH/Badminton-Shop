@@ -23,3 +23,12 @@ a {
 a:hover {
   text-decoration: none;
 }
+
+button {
+  appearance: none;
+  border: none;
+  background: none;
+}
+button:hover {
+  cursor: pointer !important;
+}
