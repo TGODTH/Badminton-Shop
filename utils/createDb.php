@@ -107,7 +107,7 @@ class CreateDb
     }
 
     // insert user data into the database
-    public function insertUser($username, $email, $password)
+    public function insertUser($username, $password)
     {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -120,4 +120,4 @@ class CreateDb
             return false;
         }
     }
-}
+}?>

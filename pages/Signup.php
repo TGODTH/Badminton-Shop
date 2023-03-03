@@ -103,12 +103,11 @@
 
     if (isset($_POST['reg_user'])) {
         $username = $_POST['username'];
-        $email = $_POST['email'];
         $password_1 = $_POST['password_1'];
         $password_2 = $_POST['password_2'];
 
         if ($password_1 == $password_2) {
-            if ($database->insertUser($username, $email, $password_1)) {
+            if ($database->insertUser($username, $password_1)) {
                 $_SESSION['success'] = "You are now logged in";
                 header('location: index.php');
             } else {
