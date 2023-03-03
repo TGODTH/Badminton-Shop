@@ -50,7 +50,7 @@ class CreateDb
             $sql1 = "CREATE TABLE IF NOT EXISTS $usertb (
                         user_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         user_name VARCHAR(50) NOT NULL,
-                        user_password VARCHAR(50) NOT NULL,
+                        user_password VARCHAR(50) NOT NULL
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;";
 
             $sql2 = "CREATE TABLE IF NOT EXISTS $producttb (
@@ -109,9 +109,8 @@ class CreateDb
     // insert user data into the database
     public function insertUser($username, $password)
     {
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO $this->usertb (user_name, user_password) VALUES ('$username', '$hashed_password')";
+        $sql = "INSERT INTO $this->usertb (user_name, user_password) VALUES ('$username', '$password')";
         $result = mysqli_query($this->con, $sql);
 
         if ($result) {
@@ -120,4 +119,4 @@ class CreateDb
             return false;
         }
     }
-}?>
+}
