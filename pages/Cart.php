@@ -18,34 +18,30 @@ if (isset($_POST['remove'])) {
     }
 }
 
-if (isset($_POST['submit_order'])) {
-    $user_name = $_SESSION['username'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['update_cart'])) {
+        $_SESSION['cart'] = json_decode($_POST['cartItems'], true);
+    } elseif (isset($_POST['submit_order'])) {
+        $user_name = $_SESSION['username'];
 
-    if (isset($_SESSION['cart'])) {
-        foreach ($_SESSION['cart'] as $cart_item) {
-            $product_name = $cart_item['product_name'];
-            if (isset($cart_item['product_quantity'])) {
-                $product_amount = $cart_item['product_quantity'];
-            } else {
-                $product_amount = 1;
+        if (isset($_SESSION['cart'])) {
+            foreach ($_SESSION['cart'] as $cart_item) {
+                $product_name = $cart_item['product_name'];
+                if (isset($cart_item['product_quantity'])) {
+                    $product_amount = $cart_item['product_quantity'];
+                } else {
+                    $product_amount = 1;
+                }
+                if ($db->addOrder($user_name, $product_name, $product_amount)) {
+                } else {
+                    echo "<script>alert('Error adding order list.')</script>";
+                }
             }
-            if ($db->addOrder($user_name, $product_name, $product_amount)) {
-            } else {
-                echo "<script>alert('Error adding order list.')</script>";
-            }
+            unset($_SESSION['cart']);
+            echo "<script>alert('orders added successfully!')</script>";
+        } else {
+            echo "<script>alert('Cart is empty.')</script>";
         }
-
-        unset($_SESSION['cart']);
-        echo "<script>alert('orders added successfully!')</script>";
-    } else {
-        echo "<script>alert('Cart is empty.')</script>";
-    }
-}
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
-    // Loop through the items in the cart and update their quantities
-    foreach ($_SESSION['cart'] as &$item) {
-        $productName = $item['product_name'];
-        $item['product_quantity'] = $_POST[$productName];
     }
 }
 ?>
@@ -164,6 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
 
     <script>
         function increaseQuantity(productName) {
+            console.log("Increasing quantity")
             var quantityField = document.getElementById('quantity-' + productName);
             var quantity = parseInt(quantityField.value);
             quantityField.value = quantity + 1;
@@ -183,7 +180,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
             var quantityField = document.getElementById('quantity-' + productName);
             var newQuantity = parseInt(quantityField.value);
             var cartItems = JSON.parse('<?php echo json_encode($_SESSION['cart']); ?>');
-
             for (var i in cartItems) {
                 if (cartItems[i]['product_name'] === productName) {
                     cartItems[i]['product_quantity'] = newQuantity;
@@ -191,10 +187,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
                 }
             }
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'update_cart.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify(cartItems));
+            var form = document.createElement('form');
+            form.setAttribute('method', 'POST');
+            form.setAttribute('action', 'cart.php');
+
+            var updateCartInput = document.createElement('input');
+            updateCartInput.setAttribute('type', 'hidden');
+            updateCartInput.setAttribute('name', 'update_cart');
+            updateCartInput.setAttribute('value', '1');
+            form.appendChild(updateCartInput);
+
+            var cartItemsInput = document.createElement('input');
+            cartItemsInput.setAttribute('type', 'hidden');
+            cartItemsInput.setAttribute('name', 'cartItems');
+            cartItemsInput.setAttribute('value', JSON.stringify(cartItems));
+            console.log("🚀 ~ file: cart.php:193 ~ changeQuantity ~ JSON.stringify(cartItems):", JSON.stringify(cartItems))
+            form.appendChild(cartItemsInput);
+
+            document.body.appendChild(form);
+            form.submit();
+
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
