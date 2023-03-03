@@ -103,8 +103,7 @@
 
     if (isset($_POST['reg_user'])) {
         $username = $_POST['username'];
-        $password_1 = $_POST['password_1'];
-        $password_2 = $_POST['password_2'];
+        $password = $_POST['password'];
 
         if ($password_1 == $password_2) {
             if ($database->insertUser($username, $password_1)) {
@@ -121,7 +120,7 @@
 
     ?>
     <div class="header">
-        <h2>START SHOPPING TODAY!</h2>
+        <h2>Login to KoolBadminton </h2>
     </div>
 
     <form method="post" action="">
@@ -134,11 +133,7 @@
             <input type="password" name="password_1">
         </div>
         <div class="input-group">
-            <label for="password_2">Confirm Password</label>
-            <input type="password" name="password_2">
-        </div>
-        <div class="input-group">
-            <button type="submit" name="reg_user" class="btn">Sign Up</button>
+            <button type="submit" name="login_user" class="btn">Log In</button>
         </div>
         <p>Already a member </p>
 
