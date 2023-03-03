@@ -37,7 +37,7 @@
                 echo "<span id=\"cart_count\">0</span>";
             }
             ?>
-            ชิ้น
+            Item
         </p>
     </a>
 </body>
