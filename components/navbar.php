@@ -70,7 +70,7 @@
         <div class="links">
             <a href="/pages/admin.php">Admin</a>
             <a href="/pages/login.php">Log In</a>
-            <a href="/pages/signup.php">Sing Up</a>
+            <a href="/pages/signup.php">Sign Up</a>
         </div>
     </nav>
 </header>
