@@ -97,19 +97,37 @@
 </head>
 
 <body>
-    <?php require_once("../components/navbar.php"); ?>
+    <?php require_once("../components/navbar.php");
+    require_once("../utils/CreateDb.php");
+    $database = new CreateDb();
+
+    if (isset($_POST['reg_user'])) {
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $password_1 = $_POST['password_1'];
+        $password_2 = $_POST['password_2'];
+
+        if ($password_1 == $password_2) {
+            if ($database->insertUser($username, $email, $password_1)) {
+                $_SESSION['success'] = "You are now logged in";
+                header('location: index.php');
+            } else {
+                $_SESSION['error'] = "Database error: Could not register user";
+            }
+        } else {
+            $_SESSION['error'] = "The two passwords do not match";
+        }
+    }
+
+    ?>
     <div class="header">
         <h2>START SHOPPING TODAY!</h2>
     </div>
 
-    <form action="register.php">
+    <form method="post" action="">
         <div class="input-group">
             <label for="uesrname">Username</label>
             <input type="text" name="username">
-        </div>
-        <div class="input-group">
-            <label for="email">Email</label>
-            <input type="email" name="email">
         </div>
         <div class="input-group">
             <label for="password_1">Password</label>

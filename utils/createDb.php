@@ -105,4 +105,19 @@ class CreateDb
             return $result;
         }
     }
+
+    // insert user data into the database
+    public function insertUser($username, $email, $password)
+    {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        $sql = "INSERT INTO $this->usertb (user_name, user_password) VALUES ('$username', '$hashed_password')";
+        $result = mysqli_query($this->con, $sql);
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
