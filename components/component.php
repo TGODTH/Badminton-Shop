@@ -44,29 +44,27 @@ function cartElement($productimg, $productname, $productprice)
     }
 
     $element = "
-    <form action=\"cart.php?action=remove&product_name=$productname\" method=\"post\" class=\"cart-items\">
-    <div class=\"border rounded\">
-        <div class=\"row bg-white\">
-            <div class=\"col-md-3 pl-0\">
-                <img src=$productimg alt=\"Image1\" class=\"img-fluid\">
-            </div>
-            <div class=\"col-md-6\">
-                <h5 class=\"pt-2\">$productname</h5>
-                <h5 class=\"pt-2\">฿$productprice</h5>
-                <button type=\"submit\" class=\"btn btn-danger mx-2 button-text\" name=\"remove\">Remove</button>
-            </div>
-            <div class=\"col-md-3 py-5\">
-                <div>
-                    <button type=\"button\" class=\"btn bg-light border rounded-circle\" onclick=\"decreaseQuantity('$productname')\"><i class=\"fas fa-minus\"></i></button>
-                    <input type=\"number\" value=\"$product_quantity\" step=\"1\" class=\"form-control w-25 d-inline\" id=\"quantity-$productname\" onchange=\"changeQuantity('$productname')\">
-                    <button type=\"button\" class=\"btn bg-light border rounded-circle\" onclick=\"increaseQuantity('$productname')\"><i class=\"fas fa-plus\"></i></button>
+    <form method=\"post\" class=\"cart-items\">
+        <div class=\"border rounded\">
+            <div class=\"row bg-white\">
+                <div class=\"col-md-3 pl-0\">
+                    <img src=\"$productimg\" alt=\"Image1\" class=\"img-fluid\">
+                </div>
+                <div class=\"col-md-6\">
+                    <h5 class=\"pt-2\">$productname</h5>
+                    <h5 class=\"pt-2\">฿$productprice</h5>
+                    <button type=\"submit\" class=\"btn btn-danger mx-2 button-text\" name=\"remove\">Remove</button>
+                </div>
+                <div class=\"col-md-3 py-5\">
+                    <div>
+                        <button type=\"button\" class=\"btn bg-light border rounded-circle\" name=\"update_cart\" onclick=\"decreaseQuantity('$productname')\"><i class=\"fas fa-minus\"></i></button>
+                        <input type=\"number\" value=\"$product_quantity\" step=\"1\" min=\"1\" id=\"quantity-$productname\" class=\"form-control w-25 d-inline\" name=\"$productname\">
+                        <button type=\"button\" class=\"btn bg-light border rounded-circle\" name=\"update_cart\" onclick=\"increaseQuantity('$productname')\"><i class=\"fas fa-plus\"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>";
 
-
-    ";
     echo $element;
 }
