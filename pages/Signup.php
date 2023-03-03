@@ -1,4 +1,6 @@
-<?php require_once('../utils/CreateDb.php');
+<?php 
+session_start();
+require_once('../utils/CreateDb.php');
 ob_start(); ?>
 
 <!DOCTYPE html>
