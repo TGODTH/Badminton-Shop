@@ -68,7 +68,6 @@ class CreateDb
             $sql3 = "CREATE TABLE IF NOT EXISTS $ordertb (
                         order_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         user_name VARCHAR(50) NOT NULL,
-                        product_id INT(11) NOT NULL,
                         product_name VARCHAR(50) NOT NULL,
                         product_price FLOAT DEFAULT NULL,
                         product_amount INT DEFAULT NULL
@@ -133,6 +132,23 @@ class CreateDb
         if (mysqli_num_rows($result) == 1) {
             return true;
         } else {
+            return false;
+        }
+    }
+
+    public function addOrder($user_name, $product_name, $product_amount)
+    {
+        $sql_get_price = "SELECT product_price FROM $this->producttb WHERE product_name = '$product_name'";
+        $result = mysqli_query($this->con, $sql_get_price);
+        $row = mysqli_fetch_assoc($result);
+        $product_price = $row['product_price'];
+
+        $sql_add_order = "INSERT INTO $this->ordertb (user_name, product_name, product_price, product_amount) VALUES ('$user_name', '$product_name', $product_price, $product_amount)";
+
+        if (mysqli_query($this->con, $sql_add_order)) {
+            return true;
+        } else {
+            echo "Error adding order list: " . mysqli_error($this->con);
             return false;
         }
     }

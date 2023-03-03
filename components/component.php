@@ -24,7 +24,7 @@ function component($productname, $productdescription, $productprice, $productimg
                             <input type='hidden' name='product_name' value='$productname'>
                             </div>
                             </div>
-                            <button type=\"submit\" class=\"add-button\" name=\"add\">Add to Cart <i class=\"fas fa-shopping-cart\"></i></button>
+                            <button type=\"submit\" class=\"add-button\" name=\"add\">Add to Cart<i class=\"fas fa-shopping-cart\"></i></button>
                             </form>
             </div>
     ";
@@ -33,31 +33,40 @@ function component($productname, $productdescription, $productprice, $productimg
 
 function cartElement($productimg, $productname, $productprice)
 {
+    $product_quantity = 1; // Default to 1 if not found
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $cart_item) {
+            if ($cart_item['product_name'] === $productname && isset($cart_item['product_quantity'])) {
+                $product_quantity = $cart_item['product_quantity'];
+                break;
+            }
+        }
+    }
+
     $element = "
-    
     <form action=\"cart.php?action=remove&product_name=$productname\" method=\"post\" class=\"cart-items\">
-                    <div class=\"border rounded\">
-                        <div class=\"row bg-white\">
-                            <div class=\"col-md-3 pl-0\">
-                                <img src=$productimg alt=\"Image1\" class=\"img-fluid\">
-                            </div>
-                            <div class=\"col-md-6\">
-                                <h5 class=\"pt-2\">$productname</h5>
-                                <h5 class=\"pt-2\">฿$productprice</h5>
-                                <button type=\"submit\" class=\"btn btn-warning button-text\">Save for Later</button>
-                                <button type=\"submit\" class=\"btn btn-danger mx-2 button-text\" name=\"remove\">Remove</button>
-                            </div>
-                            <div class=\"col-md-3 py-5\">
-                                <div>
-                                    <button type=\"button\" class=\"btn bg-light border rounded-circle\"><i class=\"fas fa-minus\"></i></button>
-                                    <input type=\"text\" value=\"1\" class=\"form-control w-25 d-inline\">
-                                    <button type=\"button\" class=\"btn bg-light border rounded-circle\"><i class=\"fas fa-plus\"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-    
+    <div class=\"border rounded\">
+        <div class=\"row bg-white\">
+            <div class=\"col-md-3 pl-0\">
+                <img src=$productimg alt=\"Image1\" class=\"img-fluid\">
+            </div>
+            <div class=\"col-md-6\">
+                <h5 class=\"pt-2\">$productname</h5>
+                <h5 class=\"pt-2\">฿$productprice</h5>
+                <button type=\"submit\" class=\"btn btn-danger mx-2 button-text\" name=\"remove\">Remove</button>
+            </div>
+            <div class=\"col-md-3 py-5\">
+                <div>
+                    <button type=\"button\" class=\"btn bg-light border rounded-circle\" onclick=\"decreaseQuantity('$productname')\"><i class=\"fas fa-minus\"></i></button>
+                    <input type=\"number\" value=\"$product_quantity\" step=\"1\" class=\"form-control w-25 d-inline\" id=\"quantity-$productname\" onchange=\"changeQuantity('$productname')\">
+                    <button type=\"button\" class=\"btn bg-light border rounded-circle\" onclick=\"increaseQuantity('$productname')\"><i class=\"fas fa-plus\"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
     ";
     echo $element;
 }

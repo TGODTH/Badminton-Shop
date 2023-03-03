@@ -10,31 +10,24 @@ require_once('components/component.php');
 $database = new CreateDb();
 
 if (isset($_POST['add'])) {
+    $item_array = array(
+        'product_name' => $_POST['product_name'],
+        'product_quantity' => 1
+    );
+
     if (isset($_SESSION['cart'])) {
+        $item_array_name = array_column($_SESSION['cart'], "product_name");
 
-        $item_array_id = array_column($_SESSION['cart'], "product_name");
-
-        if (in_array($_POST['product_name'], $item_array_id)) {
+        if (in_array($_POST['product_name'], $item_array_name)) {
             echo "<script>alert('Product is already added in the cart..!')</script>";
         } else {
-
-            $count = count($_SESSION['cart']);
-            $item_array = array(
-                'product_name' => $_POST['product_name']
-            );
-
-            $_SESSION['cart'][$count] = $item_array;
+            array_push($_SESSION['cart'], $item_array);
         }
     } else {
-
-        $item_array = array(
-            'product_name' => $_POST['product_name']
-        );
-
-        // Create new session variable
         $_SESSION['cart'][0] = $item_array;
     }
 }
+
 
 
 ?>
@@ -131,10 +124,6 @@ if (isset($_POST['add'])) {
         </div>
     </div>
     <?php require_once("components/cartIcon.php"); ?>
-
-
-
-
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

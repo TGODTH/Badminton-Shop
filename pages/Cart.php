@@ -18,16 +18,47 @@ if (isset($_POST['remove'])) {
     }
 }
 
+if (isset($_POST['submit_order'])) {
+    $user_name = $_SESSION['username'];
 
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $cart_item) {
+            $product_name = $cart_item['product_name'];
+            if (isset($cart_item['product_quantity'])) {
+                $product_amount = $cart_item['product_quantity'];
+            } else {
+                $product_amount = 1;
+            }
+            if ($db->addOrder($user_name, $product_name, $product_amount)) {
+            } else {
+                echo "<script>alert('Error adding order list.')</script>";
+            }
+        }
+
+        unset($_SESSION['cart']);
+        echo "<script>alert('orders added successfully!')</script>";
+    } else {
+        echo "<script>alert('Cart is empty.')</script>";
+    }
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
+    // Loop through the items in the cart and update their quantities
+    foreach ($_SESSION['cart'] as &$item) {
+        $productName = $item['product_name'];
+        $item['product_quantity'] = $_POST[$productName];
+    }
+}
 ?>
+
+
+
 
 <!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Kool Badminton - Cart</title>
 
@@ -35,11 +66,9 @@ if (isset($_POST['remove'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css" />
 
     <!-- Bootstrap CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/css/style.css?<?php echo time(); ?>" />
     <link rel="stylesheet" type="text/css" href="/css/main.css?<?php echo time(); ?>" />
 
@@ -81,53 +110,83 @@ if (isset($_POST['remove'])) {
 
                 </div>
             </div>
-                <div class="col-md-4 offset-md-1 border rounded mt-5 bg-white h-25">
+            <div class="col-md-4 offset-md-1 border rounded mt-5 bg-white h-25">
 
-                    <div class="pt-4">
-                        <h6>PRICE DETAILS</h6>
-                        <hr>
-                        <div class="row price-details">
-                            <div class="col-md-6">
+                <div class="pt-4">
+                    <h6>PRICE DETAILS</h6>
+                    <hr>
+                    <div class="row price-details">
+                        <div class="col-md-6">
+                            <?php
+                            if (isset($_SESSION['cart'])) {
+                                $count = count($_SESSION['cart']);
+                                echo "<h6>Price ($count items)</h6>";
+                            } else {
+                                echo "<h6>Price (0 items)</h6>";
+                            }
+                            ?>
+                            <h6>Delivery Charges</h6>
+                            <hr>
+                            <h6>Total</h6>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>฿
+                                <?php echo $total; ?>
+                            </h6>
+                            <h6 class="text-success">FREE</h6>
+                            <hr>
+                            <h6>฿
                                 <?php
-                                if (isset($_SESSION['cart'])) {
-                                    $count = count($_SESSION['cart']);
-                                    echo "<h6>Price ($count items)</h6>";
-                                } else {
-                                    echo "<h6>Price (0 items)</h6>";
-                                }
+                                echo $total;
                                 ?>
-                                <h6>Delivery Charges</h6>
-                                <hr>
-                                <h6>Total</h6>
-                            </div>
-                            <div class="col-md-6">
-                                <h6>฿
-                                    <?php echo $total; ?>
-                                </h6>
-                                <h6 class="text-success">FREE</h6>
-                                <hr>
-                                <h6>฿
-                                    <?php
-                                    echo $total;
-                                    ?>
-                                </h6>
-                            </div>
+                            </h6>
                         </div>
                     </div>
                 </div>
-            <button type="submit" name="PAY" class="btn"> Pay </button>
+            </div>
+            <form method="post" action=""><button type="submit" name="submit_order" class="btn"> Pay </button></form>
         </div>
     </div>
     <?php require_once("../components/cartIcon.php"); ?>
 
 
+    <script>
+        function increaseQuantity(productName) {
+            var quantityField = document.getElementById('quantity-' + productName);
+            var quantity = parseInt(quantityField.value);
+            quantityField.value = quantity + 1;
+            changeQuantity(productName);
+        }
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-        crossorigin="anonymous"></script>
+        function decreaseQuantity(productName) {
+            var quantityField = document.getElementById('quantity-' + productName);
+            var quantity = parseInt(quantityField.value);
+            if (quantity > 1) {
+                quantityField.value = quantity - 1;
+                changeQuantity(productName);
+            }
+        }
+
+        function changeQuantity(productName) {
+            var quantityField = document.getElementById('quantity-' + productName);
+            var newQuantity = parseInt(quantityField.value);
+            var cartItems = JSON.parse('<?php echo json_encode($_SESSION['cart']); ?>');
+
+            for (var i in cartItems) {
+                if (cartItems[i]['product_name'] === productName) {
+                    cartItems[i]['product_quantity'] = newQuantity;
+                    break;
+                }
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'update_cart.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(cartItems));
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
 </body>
 
