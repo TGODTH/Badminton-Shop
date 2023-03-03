@@ -58,7 +58,13 @@
         }
     </style>
 </head>
-
+<?php
+if (isset($_POST['logout'])) {
+    session_destroy();
+    header("location: /index.php");
+    exit;
+}
+?>
 <header id="header">
     <nav>
         <a href="/index.php" class="navbar-brand">
@@ -67,10 +73,19 @@
                 <img src="https://image.makewebeasy.net/makeweb/0/RkWxkNYkh/Badminton/%E0%B8%A5%E0%B8%B9%E0%B8%81%E0%B8%82%E0%B8%99%E0%B9%84%E0%B8%81%E0%B9%88_Fierce_3.png" alt="" class="cover-image">
             </h3>
         </a>
-        <div class="links">
+        <div class="links" <?php if (isset($_SESSION['username'])) {
+                                echo 'style="display:none"';
+                            } ?>>
             <a href="/pages/admin.php">Admin</a>
             <a href="/pages/login.php">Log In</a>
             <a href="/pages/signup.php">Sign Up</a>
         </div>
+        <?php if (isset($_SESSION['username'])) : ?>
+            <p>Welcome, <?php echo $_SESSION['username']; ?></p>
+            <form method="POST">
+                <button type="submit" name="logout">Log out</button>
+            </form>
+        <?php endif; ?>
+
     </nav>
 </header>

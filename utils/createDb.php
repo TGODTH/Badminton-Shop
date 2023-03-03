@@ -119,4 +119,23 @@ class CreateDb
             return false;
         }
     }
+
+    // insert user data into the database
+    public function loginUser($username, $password)
+    {
+        // sanitize input
+        $username = mysqli_real_escape_string($this->con, $username);
+        $password = mysqli_real_escape_string($this->con, $password);
+
+        // query to check if user exists
+        $sql = "SELECT * FROM $this->usertb WHERE user_name='$username' AND user_password='$password'";
+        $result = mysqli_query($this->con, $sql);
+
+        // check if there is a match
+        if (mysqli_num_rows($result) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

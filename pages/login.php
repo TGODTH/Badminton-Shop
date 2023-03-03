@@ -1,4 +1,7 @@
-<?php require_once('../utils/CreateDb.php');ob_start(); ?>
+<?php
+session_start();
+require_once('../utils/CreateDb.php');
+ob_start(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -101,20 +104,17 @@
     require_once("../utils/CreateDb.php");
     $database = new CreateDb();
 
-    if (isset($_POST['reg_user'])) {
+    if (isset($_POST['login_user'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
 
-        if ($password_1 == $password_2) {
-            if ($database->insertUser($username, $password_1)) {
-                $_SESSION['success'] = "You are now logged in";
-                header('location: /index.php');
-                exit;
-            } else {
-                $_SESSION['error'] = "Database error: Could not register user";
-            }
+        if ($database->loginUser($username, $password)) {
+            $_SESSION['success'] = "You are now logged in";
+            $_SESSION['username'] = $username;
+            header('location: /index.php');
+            exit;
         } else {
-            $_SESSION['error'] = "The two passwords do not match";
+            $_SESSION['error'] = "Invalid username or password";
         }
     }
 
@@ -129,8 +129,8 @@
             <input type="text" name="username">
         </div>
         <div class="input-group">
-            <label for="password_1">Password</label>
-            <input type="password" name="password_1">
+            <label for="password">Password</label>
+            <input type="password" name="password">
         </div>
         <div class="input-group">
             <button type="submit" name="login_user" class="btn">Log In</button>
