@@ -11,7 +11,6 @@ class CreateDb
     private $ordertb;
     private $con;
 
-    // class constructor
     public function __construct(
         $servername = "localhost",
         $username = "root",
@@ -30,23 +29,18 @@ class CreateDb
         $this->username = $username;
         $this->password = $password;
 
-        // create connection
         $this->con = mysqli_connect($servername, $username, $password);
 
-        // Check connection
         if (!$this->con) {
             die("Connection failed : " . mysqli_connect_error());
         }
 
-        // query
         $sql = "CREATE DATABASE IF NOT EXISTS $dbname /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */";
 
-        // execute query
         if (mysqli_query($this->con, $sql)) {
 
             $this->con = mysqli_connect($servername, $username, $password, $dbname);
 
-            // sql to create new tables
             $sql1 = "CREATE TABLE IF NOT EXISTS $usertb (
                         user_name VARCHAR(50) NOT NULL PRIMARY KEY,
                         user_password VARCHAR(50) NOT NULL
@@ -91,7 +85,6 @@ class CreateDb
         }
     }
 
-    // get product from the database
     public function getData($tablename)
     {
         $sql = "SELECT * FROM $tablename";
@@ -103,7 +96,6 @@ class CreateDb
         }
     }
 
-    // insert user data into the database
     public function insertUser($username, $password)
     {
 
@@ -117,18 +109,14 @@ class CreateDb
         }
     }
 
-    // insert user data into the database
     public function loginUser($username, $password)
     {
-        // sanitize input
         $username = mysqli_real_escape_string($this->con, $username);
         $password = mysqli_real_escape_string($this->con, $password);
 
-        // query to check if user exists
         $sql = "SELECT * FROM $this->usertb WHERE user_name='$username' AND user_password='$password'";
         $result = mysqli_query($this->con, $sql);
 
-        // check if there is a match
         if (mysqli_num_rows($result) == 1) {
             return true;
         } else {

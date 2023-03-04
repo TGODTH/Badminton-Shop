@@ -33,7 +33,7 @@ function component($productname, $productdescription, $productprice, $productimg
 
 function cartElement($productimg, $productname, $productprice)
 {
-    $product_quantity = 1; // Default to 1 if not found
+    $product_quantity = 1;
     if (isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as $cart_item) {
             if ($cart_item['product_name'] === $productname && isset($cart_item['product_quantity'])) {
@@ -42,6 +42,7 @@ function cartElement($productimg, $productname, $productprice)
             }
         }
     }
+    $price = (int) $productprice * (int) $product_quantity;
 
     $element = "
     <form method=\"post\" class=\"cart-items\">
@@ -52,7 +53,7 @@ function cartElement($productimg, $productname, $productprice)
                 </div>
                 <div class=\"col-md-6\">
                     <h5 class=\"pt-2\">$productname</h5>
-                    <h5 class=\"pt-2\">฿$productprice</h5>
+                    <h5 class=\"pt-2\">฿$price</h5>
                     <button type=\"submit\" class=\"btn btn-danger mx-2 button-text\" name=\"remove\">Remove</button>
                 </div>
                 <div class=\"col-md-3 py-5\">

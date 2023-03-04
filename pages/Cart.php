@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Kool Badminton - Cart</title>
     <style>
-        .btnPay{
+        .btnPay {
             margin-top: 1rem;
             padding: 1rem;
             font-size: 2rem;
@@ -99,14 +99,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $total = 0;
                     if (isset($_SESSION['cart'])) {
-                        $product_id = array_column($_SESSION['cart'], 'product_name');
+                        $product_name_list = array_column($_SESSION['cart'], 'product_name');
 
                         $result = $db->getData("producttb");
                         while ($row = mysqli_fetch_assoc($result)) {
-                            foreach ($product_id as $product_name) {
+                            foreach ($product_name_list as $product_name) {
                                 if ($row['product_name'] == $product_name) {
                                     cartElement($row['product_image'], $row['product_name'], $row['product_price']);
-                                    $total = $total + (int) $row['product_price'];
+                                    foreach ($_SESSION['cart'] as $cart_item) {
+                                        if ($cart_item['product_name'] === $product_name && isset($cart_item['product_quantity'])) {
+                                            $total = $total + ((int) $row['product_price'] * $cart_item['product_quantity']);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                         }
