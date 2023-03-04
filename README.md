@@ -28,7 +28,9 @@ This project showcases my skills in programming, teaching, coaching, and web dev
 Overall, this project highlights my ability to collaborate, learn new skills, and apply them to real-world problems.
 
 Collaborators
-Your Name - original author of the project.
+* [Kool](https://github.com/KKooLNoI) - original author of the project.
+* [TGOD](https://github.com/TGODTH) - contributed to the web scraping script and provided programming guidance and coaching throughout the project with the permission and approval of Kool.
+
 
 ## Screenshots
 
