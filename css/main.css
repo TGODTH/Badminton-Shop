@@ -32,3 +32,6 @@ button {
 button:hover {
   cursor: pointer !important;
 }
+.invisible {
+  display: none;
+}

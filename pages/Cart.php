@@ -8,22 +8,24 @@ require_once("../components/component.php");
 $db = new CreateDb();
 
 if (isset($_POST['remove'])) {
-    if ($_GET['action'] == 'remove') {
+    
         foreach ($_SESSION['cart'] as $key => $value) {
             echo "</pre>";
-            if (trim($value["product_name"]) == trim($_GET['product_name'])) {
+            if (trim($value["product_name"]) == trim($_POST['product_n'])) {
                 unset($_SESSION['cart'][$key]);
             }
         }
-    }
+    
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update_cart'])) {
         $_SESSION['cart'] = json_decode($_POST['cartItems'], true);
     } elseif (isset($_POST['submit_order'])) {
+        
+    if(isset($_SESSION['username'])) {
         $user_name = $_SESSION['username'];
-
+    
         if (isset($_SESSION['cart'])) {
             foreach ($_SESSION['cart'] as $cart_item) {
                 $product_name = $cart_item['product_name'];
@@ -42,6 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "<script>alert('Cart is empty.')</script>";
         }
+        
+    }
+    else{
+        $_SESSION['error'] = "error please login!";
+        header('location: /pages/login.php');
+        exit;
+        
+    }
     }
 }
 ?>
@@ -124,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
             <div class="col-md-4 offset-md-1 border rounded mt-5 bg-white h-25">
-
+            
                 <div class="pt-4">
                     <h6>PRICE DETAILS</h6>
                     <hr>
