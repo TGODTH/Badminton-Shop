@@ -71,4 +71,5 @@ form,
   background: #f2dede;
   border-radius: 0.5rem;
   text-align: left;
+  box-sizing: border-box;
 }

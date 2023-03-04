@@ -53,6 +53,7 @@ function cartElement($productimg, $productname, $productprice)
                 </div>
                 <div class=\"col-md-6\">
                     <h5 class=\"pt-2\">$productname</h5>
+                    <input type=\"text\" name=\"product_n\" value=\"$productname\" class=\"invisible\" >
                     <h5 class=\"pt-2\">฿$price</h5>
                     <button type=\"submit\" class=\"btn btn-danger mx-2 button-text\" name=\"remove\">Remove</button>
                 </div>

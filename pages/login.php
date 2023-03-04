@@ -20,7 +20,6 @@ ob_start(); ?>
     <?php require_once("../components/navbar.php");
     require_once("../utils/CreateDb.php");
     $database = new CreateDb();
-    unset($_SESSION['error']);
     if (isset($_POST['login_user'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
