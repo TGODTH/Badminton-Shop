@@ -29,7 +29,7 @@ Overall, this project highlights my ability to collaborate, learn new skills, an
 
 ## Collaborators
 * [Kool](https://github.com/KKooLNoI) - original author of the project.
-* [TGOD](https://github.com/TGODTH) - contributed to the web scraping script and provided programming guidance and coaching throughout the project with the permission and approval of Kool.
+* [TGOD](https://github.com/TGODTH) - contributed to the web coding and provided programming guidance and coaching throughout the project with the permission and approval of Kool.
 
 
 ## Screenshots
